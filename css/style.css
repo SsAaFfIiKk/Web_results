@@ -1,0 +1,30 @@
+h1 {
+  text-align: center;
+}
+
+caption {
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.main-flex {
+  display: flex;
+  flex-direction: row;
+}
+
+.flex {
+  flex-grow: 1;
+}
+
+#video{
+  width: 640px;
+  height: 480px;
+  margin-bottom: 50px;
+}
+
+#chartContainer{
+  width: 1080px;
+  height: 480px;
+  margin-bottom: 30px;
+}
+
