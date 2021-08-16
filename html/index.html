@@ -6,24 +6,28 @@
     <meta charset="utf-8">
     <link href="{{url_for('css', path='style.css')}}" rel="stylesheet">
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <script src="http://127.0.0.1:8000/js/scripts.js"></script>
 </head>
 
 <body>
     <h1>Демонстрация вычисления параметров</h1>
     <div class="main-flex">
         <div class="flex">
-        <video id="video" src="" controls></video>
-		<br><table id="kv">
-			<caption>Коэфиценты для вычисления параметров</caption>
-		</table>
+            <video id="video" src="" controls></video>
+		    <br><table id="kv">
+			    <caption>Коэфиценты для вычисления параметров</caption>
+		    </table>
+            <br><input id="file-input" type="file">
+            <input type="button" value="загрузить" onclick="uploadArchive()">
         </div>
-		    <div class="flex" >
-				<div id="chartContainer"></div>
-				<br><table id="results"></table>
-				<br><button id="back" onclick="onClick(this.id)">Предыдущий вопрос</button> <button id="foward" onclick="onClick(this.id)">Следующий вопрос</button>
+		<div class="flex" >
+			<div id="chartContainer"></div>
+			<br><table id="results"></table>
+            <br><button id="back" onclick="onClick(this.id)">Предыдущий вопрос</button> 
+            <button id="foward" onclick="onClick(this.id)">Следующий вопрос</button>
+        </div>
 	</div>
 </body>
 
-<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
-<script src="http://127.0.0.1:8000/js/scripts.js"></script>
 </html>

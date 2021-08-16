@@ -1,15 +1,10 @@
-import json
+import shutil
 import uvicorn
-from fastapi import FastAPI, Request, Form
+from fastapi import FastAPI, Request, Form, UploadFile, File
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import FileResponse, HTMLResponse
-
-
-def load_json(path):
-    with open(path) as f:
-        data = json.load(f)
-    return data
+from tools import *
 
 
 app = FastAPI()
@@ -19,6 +14,7 @@ templates = Jinja2Templates(directory="html")
 
 path_to_json = "res.json"
 path_to_kv = "kv.json"
+path_to_storage = "save_folder/"
 
 data = load_json(path_to_json)
 kv = load_json(path_to_kv)
@@ -26,6 +22,7 @@ kv = load_json(path_to_kv)
 
 temps = []
 time_lst = []
+file_extensions = ["mp4", "txt"]
 
 for i in data:
     temps += i[8]
@@ -64,6 +61,22 @@ def video(path: str):
 @app.post("/timestamp")
 def timestamp(time: str = Form(...)):
     time_lst.append(time)
+
+
+@app.post("/save_archive")
+def save(file: UploadFile = File(...)):
+    file_name = file.filename
+    if file_name.endswith(".zip"):
+        path_to_save = create_folders(path_to_storage, file_name.split(".")[0])
+
+        with open(path_to_save + file_name, "wb") as archive:
+            shutil.copyfileobj(file.file, archive)
+        unpack_archive(file_name, path_to_save, file_extensions)
+
+        return "Архив сохранён"
+
+    else:
+        return "Загруженный файл не архив"
 
 
 if __name__ == "__main__":

@@ -22,7 +22,6 @@ function getData() {
         .then(out => {
             data = out;
             video.src = video_url + data[0];
-            console.log(data);
             makeTeble()
         })
 }
@@ -148,4 +147,25 @@ function sendTimestamp() {
     catch (e) {
         console.log('Error:', e);
     }
+}
+
+function uploadArchive() {
+    let fileInput = document.getElementById('file-input')
+    let archive = fileInput.files[0];    
+    let formData = new FormData();
+          
+    formData.append("file", archive);
+
+    const ctrl = new AbortController()    
+    setTimeout(() => ctrl.abort(), 5000);
+    
+    const fetch_url = 'http://127.0.0.1:8000/save_archive';
+
+    try {
+        let r = fetch(fetch_url, 
+            { method: "POST", mode: 'no-cors', body: formData, signal: ctrl.signal }); 
+        console.log('HTTP response code:', r.status); 
+    } catch(e) {
+        console.log('Error:', e);
+    }       
 }
