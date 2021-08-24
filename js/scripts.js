@@ -1,20 +1,34 @@
 let count = 0
-
 const video_url = "http://127.0.0.1:8000/get_video?path="
 const data_url = "http://127.0.0.1:8000/get_data?id="
 const len_url = "http://127.0.0.1:8000/get_len_data"
 const kv_url = "http://127.0.0.1:8000/get_kv"
+const temps_url = "http://127.0.0.1:8000/get_all_temps"
+const speech_url = "http://127.0.0.1:8000/get_all_speechs"
+const border_url = "http://127.0.0.1:8000/get_borders"
+
+fetch(border_url)
+    .then(res => res.json())
+    .then(out => borders = out)
+
+fetch(temps_url)
+    .then(res => res.json())
+    .then(out => temps = out)
+
+fetch(speech_url)
+    .then(res => res.json())
+    .then(out => speech = out)
 
 fetch(len_url)
-		.then(res => res.json())
-		.then(data => len_data = data)
+	.then(res => res.json())
+	.then(data => len_data = data)
 
 fetch(kv_url)
-		.then(res => res.json())
-		.then(out => {kv=out; makeKVTable(kv)})
+	.then(res => res.json())
+	.then(out => {kv=out; makeKVTable(kv)})
         
 getData();
-	
+
 
 function getData() {
     fetch(data_url + count)
@@ -77,8 +91,8 @@ function makeTeble() {
             table.appendChild(newTr)
         }
     }
-    let coords = prepareCords(arrays)
-    drawChart(coords)
+    
+    drawChart(prepareCords(arrays))
 }
 
 		
@@ -137,7 +151,7 @@ function sendTimestamp() {
     const ctrl = new AbortController();
     setTimeout(() => ctrl.abort(), 5000);
     try {
-        const r = fetch(url, {
+        fetch(url, {
             method: 'POST',
             mode: 'no-cors',
             body: formData,
@@ -158,14 +172,38 @@ function uploadArchive() {
 
     const ctrl = new AbortController()    
     setTimeout(() => ctrl.abort(), 5000);
-    
     const fetch_url = 'http://127.0.0.1:8000/save_archive';
 
     try {
-        let r = fetch(fetch_url, 
+        fetch(fetch_url, 
             { method: "POST", mode: 'no-cors', body: formData, signal: ctrl.signal }); 
         console.log('HTTP response code:', r.status); 
     } catch(e) {
         console.log('Error:', e);
     }       
+}
+
+function preparePop(){
+    // console.log(speech)
+    // console.log(temps)
+    // console.log(borders)
+    let coords = prepareCords([speech, temps])
+    // console.log(coords)
+    let options = {
+        animationEnabled: true,
+        title: {text: "Изменение темпа в ходе интревью"},
+        axisY:{
+            stripLines: [{
+                value: borders[0]
+            },{
+                value: borders[1]
+            }]
+        },
+    
+        data: [{
+            type: "spline",
+            dataPoints: coords
+        }]
+    };
+    return options
 }

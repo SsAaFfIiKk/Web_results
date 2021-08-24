@@ -8,6 +8,9 @@
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
     <script src="http://127.0.0.1:8000/js/scripts.js"></script>
+    <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+    <script src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 </head>
 
 <body>
@@ -26,8 +29,31 @@
 			<br><table id="results"></table>
             <br><button id="back" onclick="onClick(this.id)">Предыдущий вопрос</button> 
             <button id="foward" onclick="onClick(this.id)">Следующий вопрос</button>
+            <button id="showChart">Общий график</button>
+            <div id="dialogBox">
+                <div id="popChart"></div>
+            </div>
         </div>
 	</div>
 </body>
 
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script>
+window.onload = function () {
+$("#showChart").click(function() {
+	$("#dialogBox").dialog({
+		open: function(event,ui) {
+			$(".ui-widget-overlay").bind("click", function(event,ui) {         
+				$("#dialogBox").dialog("close");
+			});
+		},
+		closeOnEscape: true,
+		resizable: false,
+		width: '100%',
+	});
+	$(".ui-widget-overlay").css({"background-color": "#111111"});
+	$("#popChart").CanvasJSChart(preparePop());
+});
+}
+</script>
 </html>

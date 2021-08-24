@@ -16,15 +16,23 @@ caption {
   flex-grow: 1;
 }
 
-#video{
+#video {
   width: 640px;
   height: 480px;
   margin-bottom: 50px;
 }
 
-#chartContainer{
+#chartContainer {
   width: 1080px;
   height: 480px;
   margin-bottom: 30px;
 }
 
+#dialogBox {
+  display: none;
+}
+
+#popChart {
+  width: 100%;
+  height: 480px;
+}

@@ -19,13 +19,14 @@ path_to_storage = "save_folder/"
 data = load_json(path_to_json)
 kv = load_json(path_to_kv)
 
-
 temps = []
+speechs = []
 time_lst = []
 file_extensions = ["mp4", "txt"]
 
 for i in data:
     temps += i[8]
+    speechs += i[6]
 
 
 @app.get("/get_len_data")
@@ -34,8 +35,18 @@ def get_len():
 
 
 @app.get("/get_all_temps")
-def temps():
+def tm():
     return temps
+
+
+@app.get("/get_all_speechs")
+def sp():
+    return speechs
+
+
+@app.get("/get_borders")
+def borders():
+    return kv[1], kv[2]
 
 
 @app.get("/get_kv")
