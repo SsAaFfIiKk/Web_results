@@ -18,42 +18,45 @@
     <div class="main-flex">
         <div class="flex">
             <video id="video" src="" controls></video>
-		    <br><table id="kv">
-			    <caption>Коэфиценты для вычисления параметров</caption>
-		    </table>
+            <br>
+            <table id="kv">
+                <caption>Коэфиценты для вычисления параметров</caption>
+            </table>
             <br><input id="file-input" type="file">
             <input type="button" value="загрузить" onclick="uploadArchive()">
         </div>
-		<div class="flex" >
-			<div id="chartContainer"></div>
-			<br><table id="results"></table>
-            <br><button id="back" onclick="onClick(this.id)">Предыдущий вопрос</button> 
+        <div class="flex">
+            <div id="chartContainer"></div>
+            <br>
+            <table id="results"></table>
+            <br><button id="back" onclick="onClick(this.id)">Предыдущий вопрос</button>
             <button id="foward" onclick="onClick(this.id)">Следующий вопрос</button>
             <button id="showChart">Общий график</button>
             <div id="dialogBox">
                 <div id="popChart"></div>
             </div>
         </div>
-	</div>
+    </div>
 </body>
 
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script>
-window.onload = function () {
-$("#showChart").click(function() {
-	$("#dialogBox").dialog({
-		open: function(event,ui) {
-			$(".ui-widget-overlay").bind("click", function(event,ui) {         
-				$("#dialogBox").dialog("close");
-			});
-		},
-		closeOnEscape: true,
-		resizable: false,
-		width: '100%',
-	});
-	$(".ui-widget-overlay").css({"background-color": "#111111"});
-	$("#popChart").CanvasJSChart(preparePop());
-});
-}
+    window.onload = function () {
+        $("#showChart").click(function () {
+            $("#dialogBox").dialog({
+                open: function (event, ui) {
+                    $(".ui-widget-overlay").bind("click", function (event, ui) {
+                        $("#dialogBox").dialog("close");
+                    });
+                },
+                closeOnEscape: true,
+                resizable: false,
+                width: '100%',
+            });
+            $(".ui-widget-overlay").css({ "background-color": "#111111" });
+            $("#popChart").CanvasJSChart(preparePop());
+        });
+    }
 </script>
+
 </html>
