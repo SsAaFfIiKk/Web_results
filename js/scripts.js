@@ -28,6 +28,8 @@ fetch(kv_url)
     .then(res => res.json())
     .then(out => makeKVTable(out))
 
+getData();
+
 function getData() {
     fetch(data_url + count)
         .then(res => res.json())
@@ -37,7 +39,6 @@ function getData() {
             makeTeble()
         })
 }
-getData();
 
 function makeKVTable(kv_val) {
     let table = document.getElementById("kv")
