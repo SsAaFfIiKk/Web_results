@@ -1,12 +1,12 @@
 let count = 0
-const video_url = "http://127.0.0.1:8000/get_video?path="
-const data_url = "http://127.0.0.1:8000/get_data?id="
-const len_url = "http://127.0.0.1:8000/get_len_data"
-const kv_url = "http://127.0.0.1:8000/get_kv"
-const temps_url = "http://127.0.0.1:8000/get_all_temps"
-const speech_url = "http://127.0.0.1:8000/get_all_speechs"
-const border_url = "http://127.0.0.1:8000/get_borders"
-const url = "http://127.0.0.1:8000/timestamp";
+const video_url = "https://teachingquality.onti.actcognitive.org/get_vid?path="
+const data_url = "https://teachingquality.onti.actcognitive.org/get_data?id="
+const len_url = "https://teachingquality.onti.actcognitive.org/get_len_dat"
+const kv_url = "https://teachingquality.onti.actcognitive.org/get_kv"
+const temps_url = "https://teachingquality.onti.actcognitive.org/get_all_temps"
+const speech_url = "https://teachingquality.onti.actcognitive.org/get_all_speechs"
+const border_url = "https://teachingquality.onti.actcognitive.org/get_borders"
+const url = "https://teachingquality.onti.actcognitive.org/timestamp";
 
 fetch(border_url)
     .then(res => res.json())
@@ -126,7 +126,7 @@ function drawChart(coords) {
 function onClick(clicked_id) {
     switch (clicked_id) {
         case "back": if (count > 0) count--; break;
-        case "foward": if (count < len_data - 1) count++; sendTimestamp(); break;
+        case "foward": if (count < len_data - 1) count++; break; //sendTimestamp();
     }
     update();
 }
@@ -136,45 +136,45 @@ function update() {
     makeTeble();
 }
 
-function sendTimestamp() {
-    let now = new Date().toLocaleTimeString();
-    let formData = new FormData();
+// function sendTimestamp() {
+//     let now = new Date().toLocaleTimeString();
+//     let formData = new FormData();
 
-    formData.append("time", now);
-    const ctrl = new AbortController();
-    setTimeout(() => ctrl.abort(), 5000);
-    try {
-        fetch(url, {
-            method: 'POST',
-            mode: 'no-cors',
-            body: formData,
-            signal: ctrl.signal
-        });
-    }
-    catch (e) {
-        console.log('Error:', e);
-    }
-}
+//     formData.append("time", now);
+//     const ctrl = new AbortController();
+//     setTimeout(() => ctrl.abort(), 5000);
+//     try {
+//         fetch(url, {
+//             method: 'POST',
+//             mode: 'no-cors',
+//             body: formData,
+//             signal: ctrl.signal
+//         });
+//     }
+//     catch (e) {
+//         console.log('Error:', e);
+//     }
+// }
 
-function uploadArchive() {
-    let fileInput = document.getElementById('file-input')
-    let archive = fileInput.files[0];
-    let formData = new FormData();
+// function uploadArchive() {
+//     let fileInput = document.getElementById('file-input')
+//     let archive = fileInput.files[0];
+//     let formData = new FormData();
 
-    formData.append("file", archive);
+//     formData.append("file", archive);
 
-    const ctrl = new AbortController()
-    setTimeout(() => ctrl.abort(), 5000);
-    const fetch_url = 'http://127.0.0.1:8000/save_archive';
+//     const ctrl = new AbortController()
+//     setTimeout(() => ctrl.abort(), 5000);
+//     const fetch_url = 'http://127.0.0.1:8000/save_archive';
 
-    try {
-        fetch(fetch_url,
-            { method: "POST", mode: 'no-cors', body: formData, signal: ctrl.signal });
-        console.log('HTTP response code:', r.status);
-    } catch (e) {
-        console.log('Error:', e);
-    }
-}
+//     try {
+//         fetch(fetch_url,
+//             { method: "POST", mode: 'no-cors', body: formData, signal: ctrl.signal });
+//         console.log('HTTP response code:', r.status);
+//     } catch (e) {
+//         console.log('Error:', e);
+//     }
+// }
 
 function preparePop() {
     let coords = prepareCords([speech, temps])

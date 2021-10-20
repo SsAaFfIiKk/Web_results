@@ -29,7 +29,7 @@ for i in data:
     speechs += i[6]
 
 
-@app.get("/get_len_data")
+@app.get("/get_len_dat")
 def get_len():
     return len(data)
 
@@ -54,27 +54,31 @@ def get_kv():
     return kv
 
 
-@app.get("/get_data")
+@app.get("/get_dat")
 def get(id: int):
     return data[id]
 
 
-@app.get("/", response_class=HTMLResponse)
+@app.get("/res", response_class=HTMLResponse)
 def homepage(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
 
-@app.get("/get_video")
+@app.get("/get_vid")
 def video(path: str):
-    return FileResponse(path)
+    return FileResponse("./" + path)
 
 
-@app.post("/timestamp")
-def timestamp(time: str = Form(...)):
-    time_lst.append(time)
+@app.get("/get_truth_graf")
+def truth():
+    return FileResponse("graf.jpg")
+
+# @app.post("/timestamp")
+# def timestamp(time: str = Form(...)):
+#     time_lst.append(time)
 
 
-@app.post("/save_archive")
+@app.post("/save_to_analyze")
 def save(file: UploadFile = File(...)):
     file_name = file.filename
     if file_name.endswith(".zip"):
@@ -91,4 +95,4 @@ def save(file: UploadFile = File(...)):
 
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port="9696")
+    uvicorn.run(app, host="0.0.0.0", port=1991, ssl_keyfile="./certs/privkey.pem", ssl_certfile="./certs/cert.pem")

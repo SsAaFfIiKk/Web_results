@@ -2,12 +2,12 @@
 <html>
 
 <head>
-    <title>demo</title>
+    <title>Результыты анализа</title>
     <meta charset="utf-8">
-    <link href="{{url_for('css', path='style.css')}}" rel="stylesheet">
+    <!-- <link href="{{url_for('css', path='style.css')}}" rel="stylesheet"> -->
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
-    <script src="http://127.0.0.1:8000/js/scripts.js"></script>
+    <!-- <script src="https://teachingquality.onti.actcognitive.org/js/scripts.js"></script> -->
     <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
     <script src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -22,8 +22,8 @@
             <table id="kv">
                 <caption>Коэфиценты для вычисления параметров</caption>
             </table>
-            <!-- <br><input id="file-input" type="file">
-            <input type="button" value="загрузить" onclick="uploadArchive()"> -->
+            <br><input id="file-input" type="file">
+            <input type="button" value="загрузить" onclick="uploadArchive()">
         </div>
         <div class="flex">
             <div id="chartContainer"></div>
@@ -31,31 +31,392 @@
             <table id="results"></table>
             <br><button id="back" onclick="onClick(this.id)">Предыдущий вопрос</button>
             <button id="foward" onclick="onClick(this.id)">Следующий вопрос</button>
-            <button id="showChart">Общий график</button>
+            <!-- <button id="showChart">Общий график</button>
             <div id="dialogBox">
                 <div id="popChart"></div>
+            </div> -->
+            <button id="myImg">График истинности</button>
+            <div id="myModal" class="modal">
+                <span class="close">×</span>
+                <img class="modal-content" id="img01">
+                <div id="caption"></div>
             </div>
         </div>
     </div>
 </body>
 
-<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<!-- <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"> -->
 <script>
-    window.onload = function () {
-        $("#showChart").click(function () {
-            $("#dialogBox").dialog({
-                open: function (event, ui) {
-                    $(".ui-widget-overlay").bind("click", function (event, ui) {
-                        $("#dialogBox").dialog("close");
-                    });
-                },
-                closeOnEscape: true,
-                resizable: false,
-                width: '100%',
-            });
-            $(".ui-widget-overlay").css({ "background-color": "#111111" });
-            $("#popChart").CanvasJSChart(preparePop());
+    // window.onload = function () {
+    //     $("#showChart").click(function () {
+    //         $("#dialogBox").dialog({
+    //             open: function (event, ui) {
+    //                 $(".ui-widget-overlay").bind("click", function (event, ui) {
+    //                     $("#dialogBox").dialog("close");
+    //                 });
+    //             },
+    //             closeOnEscape: true,
+    //             resizable: false,
+    //             width: '100%',
+    //         });
+    //         $(".ui-widget-overlay").css({ "background-color": "#111111" });
+    //         $("#popChart").CanvasJSChart(preparePop());
+    //     });
+    // }
+
+    let modal = document.getElementById('myModal');
+    let img = document.getElementById('myImg');
+    let modalImg = document.getElementById("img01");
+    let captionText = document.getElementById("caption");
+
+    img.onclick = function () {
+        modal.style.display = "block";
+        modalImg.src = "https://teachingquality.onti.actcognitive.org/get_truth_graf"
+        captionText.innerHTML = "График истинности";
+    }
+
+    let span = document.getElementsByClassName("close")[0];
+
+    span.onclick = function () {
+        modal.style.display = "none";
+    }
+
+</script>
+<style>
+    /* The Modal (background) */
+    .modal {
+        display: none;
+        /* Hidden by default */
+        position: fixed;
+        /* Stay in place */
+        z-index: 1;
+        /* Sit on top */
+        padding-top: 100px;
+        /* Location of the box */
+        left: 0;
+        top: 0;
+        width: 100%;
+        /* Full width */
+        height: 100%;
+        /* Full height */
+        overflow: auto;
+        /* Enable scroll if needed */
+        background-color: rgb(0, 0, 0);
+        /* Fallback color */
+        background-color: rgba(0, 0, 0, 0.9);
+        /* Black w/ opacity */
+    }
+
+    /* Modal Content (image) */
+    .modal-content {
+        margin: auto;
+        display: block;
+        width: 80%;
+        max-width: 1280px;
+    }
+
+    /* Caption of Modal Image */
+    #caption {
+        margin: auto;
+        display: block;
+        width: 80%;
+        max-width: 1280px;
+        text-align: center;
+        color: white;
+        padding: 10px 0;
+        height: 300px;
+    }
+
+    /* Add Animation */
+    .modal-content,
+    #caption {
+        -webkit-animation-name: zoom;
+        -webkit-animation-duration: 0.6s;
+        animation-name: zoom;
+        animation-duration: 0.6s;
+    }
+
+    @-webkit-keyframes zoom {
+        from {
+            -webkit-transform: scale(0)
+        }
+
+        to {
+            -webkit-transform: scale(1)
+        }
+    }
+
+    @keyframes zoom {
+        from {
+            transform: scale(0)
+        }
+
+        to {
+            transform: scale(1)
+        }
+    }
+
+    /* The Close Button */
+    .close {
+        position: absolute;
+        top: 15px;
+        right: 35px;
+        color: #f1f1f1;
+        font-size: 40px;
+        font-weight: bold;
+        transition: 0.3s;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: #bbb;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    /* 100% Image Width on Smaller Screens */
+    @media only screen and (max-width: 700px) {
+        .modal-content {
+            width: 100%;
+        }
+    }
+
+    h1 {
+        text-align: center;
+    }
+
+    caption {
+        font-weight: 700;
+        font-size: 18px;
+    }
+
+    .main-flex {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .flex {
+        flex-grow: 1;
+    }
+
+    #video {
+        width: 640px;
+        height: 480px;
+        margin-bottom: 50px;
+    }
+
+    #chartContainer {
+        width: 1080px;
+        height: 480px;
+        margin-bottom: 30px;
+    }
+
+    #dialogBox {
+        display: none;
+    }
+
+    #popChart {
+        width: 100%;
+        height: 480px;
+    }
+</style>
+<script>
+    let count = 0
+    const video_url = "https://teachingquality.onti.actcognitive.org/get_vid?path="
+    const data_url = "https://teachingquality.onti.actcognitive.org/get_dat?id="
+    const len_url = "https://teachingquality.onti.actcognitive.org/get_len_dat"
+    const kv_url = "https://teachingquality.onti.actcognitive.org/get_kv"
+    const temps_url = "https://teachingquality.onti.actcognitive.org/get_all_temps"
+    const speech_url = "https://teachingquality.onti.actcognitive.org/get_all_speechs"
+    const border_url = "https://teachingquality.onti.actcognitive.org/get_borders"
+    const url = "https://teachingquality.onti.actcognitive.org/timestamp";
+
+    fetch(border_url)
+        .then(res => res.json())
+        .then(out => borders = out)
+
+    fetch(temps_url)
+        .then(res => res.json())
+        .then(out => temps = out)
+
+    fetch(speech_url)
+        .then(res => res.json())
+        .then(out => speech = out)
+
+    fetch(len_url)
+        .then(res => res.json())
+        .then(out => len_data = out)
+
+    fetch(kv_url)
+        .then(res => res.json())
+        .then(out => makeKVTable(out))
+
+    getData();
+
+    function getData() {
+        fetch(data_url + count)
+            .then(res => res.json())
+            .then(out => {
+                data = out;
+                video.src = video_url + data[0];
+                makeTeble()
+            })
+    }
+
+    function makeKVTable(kv_val) {
+        let table = document.getElementById("kv")
+
+        let labels = ["Средний темп интервью: ", "Нижняя граница темпа: ", "Верхняя граница темпа: ", "Длина отрезка для анализа в секундах: ", "Пороговое значение для определения смеха: ",
+            "Минимальная длина дететируесого смеха: ", "Коэфицент для расчёта нижней границы: ", "Коэфицент для расчёта верхней границы: "]
+
+        for (let i = 0; i < kv_val.length; i++) {
+            let newTr = document.createElement('tr')
+            let td1 = document.createElement('td')
+            let td2 = document.createElement('td')
+
+            td1.innerHTML = labels[i]
+            td2.innerHTML = kv_val[i]
+
+            newTr.appendChild(td1)
+            newTr.appendChild(td2)
+            table.appendChild(newTr)
+        }
+    }
+
+    function makeTeble() {
+        let table = document.getElementById("results")
+        table.innerHTML = ""
+
+        let caption = document.createElement("caption")
+        caption.innerHTML = "Значения параметров"
+        table.appendChild(caption)
+
+        let labels = ["Номер вопроса: ", "Количество морганий: ", "Частота смены эмоций: ", "Частота улыбок: ", "Количество движений головой: ", "Движений носом: ", "Кашель: ", "Смех: ",
+            "Значения темпа", "Средний темп фрагмента: ", "Значительное снижение скорости речи: ", "Значительное повышение скорости речи: ", "Запинания: "]
+
+        let arrays = []
+
+        for (let i = 0; i < data.length; i++) {
+            if (Array.isArray(data[i])) {
+                arrays.push(data[i])
+            }
+            else {
+                let newTr = document.createElement('tr')
+                let td1 = document.createElement('td')
+                let td2 = document.createElement('td')
+
+                td1.innerHTML = labels[i]
+                td2.innerHTML = data[i]
+
+                newTr.appendChild(td1)
+                newTr.appendChild(td2)
+                table.appendChild(newTr)
+            }
+        }
+
+        drawChart(arrays)
+    }
+
+
+    function prepareCords(arrays) {
+        let coord = []
+        for (i = 0; i < arrays[0].length; i++) {
+            coord.push({
+                label: arrays[0][i],
+                y: arrays[1][i]
+            })
+        }
+
+        return coord
+    }
+
+    function drawChart(coords) {
+        var chart = new CanvasJS.Chart("chartContainer", {
+            // animationEnabled: true,
+            theme: "light2",
+            title: { text: "Динамика темпа для текущего вопроса" },
+
+            data: [
+                {
+                    type: "spline",
+                    indexLabelFontSize: 12,
+                    dataPoints: prepareCords(coords)
+                }]
         });
+        chart.render();
+    }
+
+    function onClick(clicked_id) {
+        switch (clicked_id) {
+            case "back": if (count > 0) count--; break;
+            case "foward": if (count < len_data - 1) count++; break; //sendTimestamp();
+        }
+        update();
+    }
+
+    function update() {
+        getData();
+        makeTeble();
+    }
+
+    // function sendTimestamp() {
+    //     let now = new Date().toLocaleTimeString();
+    //     let formData = new FormData();
+
+    //     formData.append("time", now);
+    //     const ctrl = new AbortController();
+    //     setTimeout(() => ctrl.abort(), 5000);
+    //     try {
+    //         fetch(url, {
+    //             method: 'POST',
+    //             mode: 'no-cors',
+    //             body: formData,
+    //             signal: ctrl.signal
+    //         });
+    //     }
+    //     catch (e) {
+    //         console.log('Error:', e);
+    //     }
+    // }
+
+    function uploadArchive() {
+        let fileInput = document.getElementById('file-input')
+        let archive = fileInput.files[0];
+        let formData = new FormData();
+
+        formData.append("file", archive);
+
+        const ctrl = new AbortController()
+        // setTimeout(() => ctrl.abort(), 5000);
+        const fetch_url = 'https://teachingquality.onti.actcognitive.org/save_to_analyze';
+
+        try {
+            fetch(fetch_url,
+                { method: "POST", mode: 'no-cors', body: formData, signal: ctrl.signal });
+            // console.log('HTTP response code:', r.status);
+        } catch (e) {
+            console.log('Error:', e);
+        }
+    }
+
+    function preparePop() {
+        let coords = prepareCords([speech, temps])
+        let options = {
+            animationEnabled: true,
+            title: { text: "Изменение темпа в ходе интревью" },
+            axisY: {
+                stripLines: [{
+                    value: borders[0]
+                }, {
+                    value: borders[1]
+                }]
+            },
+            data: [{
+                type: "spline",
+                dataPoints: coords
+            }]
+        };
+        return options
     }
 </script>
 
